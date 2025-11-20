@@ -24,6 +24,7 @@ mkdir -p "${destdir}"
 	find "arch/${SRCARCH}" -name generated -prune -o -name include -type d -print
 	find "arch/${SRCARCH}" -name Kbuild.platforms -o -name Platform
 	find include \( -name config -o -name generated \) -prune -o \( -type f -o -type l \) -print
+	[-d "rust" ] && echo "rust"
 	find_in_scripts
 ) | tar -c -f - -C "${srctree}" -T - | tar -xf - -C "${destdir}"
 
