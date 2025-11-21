@@ -27,6 +27,8 @@ use core::{marker::PhantomData, mem::MaybeUninit, pin::Pin};
 pub struct MiscDeviceOptions {
     /// The name of the miscdevice.
     pub name: &'static CStr,
+    /// The file mode of the created file.
+    pub mode: u16,
 }
 
 impl MiscDeviceOptions {
@@ -37,6 +39,7 @@ impl MiscDeviceOptions {
         result.minor = bindings::MISC_DYNAMIC_MINOR as ffi::c_int;
         result.name = crate::str::as_char_ptr_in_const_context(self.name);
         result.fops = MiscdeviceVTable::<T>::build();
+        result.mode = self.mode;
         result
     }
 }
