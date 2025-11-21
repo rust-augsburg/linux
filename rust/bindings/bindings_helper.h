@@ -85,6 +85,11 @@
 #include <linux/xarray.h>
 #include <trace/events/rust_sample.h>
 
+#include <linux/usb.h>
+#include <linux/usb/input.h>
+#include <linux/hid.h>
+#include <linux/input.h>
+
 #if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
 // Used by `#[export]` in `drivers/gpu/drm/drm_panic_qr.rs`.
 #include <drm/drm_panic.h>
