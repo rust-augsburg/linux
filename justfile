@@ -40,11 +40,11 @@ build-kernel-deb $BUILD_START_DATE=`date +%T` $BUILD_START=`date +%s`:
   @DURATION=$(($(date +%s) - BUILD_START)); echo "elapsed: $((DURATION / 60)):$((DURATION % 60))"
 
 # Install the latest .deb package of the kernel image
-install-latest-kernel-image:
-  cd .. && sudo apt install "./$(ls -t | grep 'image.*\.deb' | grep -v 'dbg' | head -n 1)" -y
+install-latest-kernel-deb-image:
+  cd .. && sudo apt install "./$(ls -t | grep 'image.*\.deb' | grep -v 'dbg' | head -n 1)" -y --allow-downgrades
 
 # Install the latest .deb package of the kernel headers
-install-latest-kernel-headers:
-  cd .. && sudo apt install "./$(ls -t | grep 'headers.*\.deb' | grep -v 'dbg' | head -n 1)" -y
+install-latest-kernel-deb-headers:
+  cd .. && sudo apt install "./$(ls -t | grep 'headers.*\.deb' | grep -v 'dbg' | head -n 1)" -y --allow-downgrades
 
-install-latest-kernel-full:  install-latest-kernel-image  install-latest-kernel-headers
+install-latest-kernel-deb-full:  install-latest-kernel-image  install-latest-kernel-headers
