@@ -20,6 +20,51 @@ use core::{marker::PhantomData, mem::MaybeUninit, ptr::NonNull};
 /// An adapter for the registration of USB drivers.
 pub struct Adapter<T: Driver>(T);
 
+/*
+#[repr(transparent)]
+pub struct Urb(Opaque<bindings::urb>);
+
+impl Urb {
+    fn fill_int_urb(&mut self, dev: &mut Device, pipe: u32, buffer: KBox<[u8]>) {
+        extern "C" fn run(f: Fn()) {
+            f()
+        }
+        unsafe {
+            bindings::usb_fill_int_urb(
+                self.0.get(),
+                dev.as_raw(),
+                pipe,
+                buffer,
+                buffer.len() as ffi::c_int,
+                run,
+                context,
+                0,
+            )
+        }
+    }
+}*/
+
+#[repr(transparent)]
+pub struct InputDevice(Opaque<bindings::input_dev>);
+
+impl InputDevice {
+    pub fn report_key(&mut self, code: u32, value: i32) -> () {
+        unsafe { bindings::input_report_key(self.0.get(), code, value) }
+    }
+
+    pub fn sync(&mut self) {
+        unsafe { bindings::input_sync(self.0.get()) }
+    }
+
+    pub unsafe fn set_drvdata(&self, data: *mut ffi::c_void) {
+        unsafe { bindings::input_set_drvdata(self.0.get(), data) };
+    }
+
+    pub unsafe fn get_drvdata(&self) -> *mut ffi::c_void {
+        unsafe { bindings::input_get_drvdata(self.0.get()) }
+    }
+}
+
 // SAFETY: A call to `unregister` for a given instance of `RegType` is guaranteed to be valid if
 // a preceding call to `register` has been successful.
 unsafe impl<T: Driver + 'static> driver::RegistrationOps for Adapter<T> {
@@ -366,6 +411,18 @@ unsafe impl AlwaysRefCounted for Interface {
     }
 }
 
+/*
+impl Interface {
+    pub unsafe fn test(&self) {
+        let ptr = self.0.get();
+        (*(*ptr).cur_altsetting).desc;
+    }
+
+    pub unsafe fn set_intf_data(&self, data: *mut ffi::c_void) {
+        bindings::usb_set_intf_data(self.0.get(), data);
+    }
+} */
+
 // SAFETY: A `Interface` is always reference-counted and can be released from any thread.
 unsafe impl Send for Interface {}
 
@@ -386,7 +443,7 @@ unsafe impl Sync for Interface {}
 ///
 /// [`struct usb_device`]: https://www.kernel.org/doc/html/latest/driver-api/usb/usb.html#c.usb_device
 #[repr(transparent)]
-struct Device<Ctx: device::DeviceContext = device::Normal>(
+pub struct Device<Ctx: device::DeviceContext = device::Normal>(
     Opaque<bindings::usb_device>,
     PhantomData<Ctx>,
 );

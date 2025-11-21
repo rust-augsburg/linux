@@ -3,6 +3,30 @@
 #include <linux/usb.h>
 #include <linux/input.h>
 
+void *rust_helper_input_get_drvdata(struct input_dev *dev) {
+	return input_get_drvdata(dev);
+}
+
+void rust_helper_input_set_drvdata(struct input_dev *dev, void *data) {
+	input_set_drvdata(dev, data);
+}
+
+int rust_helper_usb_rcvintpipe(struct usb_device *dev, int endpoint) {
+	return usb_rcvintpipe(dev, endpoint);
+}
+
+u16 rust_helper_usb_maxpacket(struct usb_device *udev, int pipe) {
+	return usb_maxpacket(udev, pipe);
+}
+
+int rust_helper_usb_make_path(struct usb_device *dev, char *buf, size_t size) {
+	return usb_make_path(dev, buf, size);
+}
+
+void rust_helper_usb_set_intfdata(struct usb_interface *intf, void *data) {
+	usb_set_intfdata(intf, data);
+}
+
 struct usb_device *rust_helper_interface_to_usbdev(struct usb_interface *intf)
 {
 	return interface_to_usbdev(intf);

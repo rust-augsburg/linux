@@ -47,4 +47,4 @@ install-latest-kernel-deb-image:
 install-latest-kernel-deb-headers:
   cd .. && sudo apt install "./$(ls -t | grep 'headers.*\.deb' | grep -v 'dbg' | head -n 1)" -y --allow-downgrades
 
-install-latest-kernel-deb-full:  install-latest-kernel-image  install-latest-kernel-headers
+install-latest-kernel-deb-full: install-latest-kernel-deb-image install-latest-kernel-deb-headers
