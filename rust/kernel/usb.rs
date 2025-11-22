@@ -44,22 +44,27 @@ impl Urb {
     }
 }*/
 
+/// EMPTY
 #[repr(transparent)]
 pub struct InputDevice(Opaque<bindings::input_dev>);
 
 impl InputDevice {
+    /// EMPTY
     pub fn report_key(&mut self, code: u32, value: i32) -> () {
         unsafe { bindings::input_report_key(self.0.get(), code, value) }
     }
 
+    /// EMPTY
     pub fn sync(&mut self) {
         unsafe { bindings::input_sync(self.0.get()) }
     }
 
+    /// EMPTY
     pub unsafe fn set_drvdata(&self, data: *mut ffi::c_void) {
         unsafe { bindings::input_set_drvdata(self.0.get(), data) };
     }
 
+    /// EMPTY
     pub unsafe fn get_drvdata(&self) -> *mut ffi::c_void {
         unsafe { bindings::input_get_drvdata(self.0.get()) }
     }
