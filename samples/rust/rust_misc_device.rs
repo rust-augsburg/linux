@@ -134,6 +134,7 @@ impl kernel::InPlaceModule for RustMiscDeviceModule {
 
         let options = MiscDeviceOptions {
             name: c_str!("rust-misc-device"),
+            mode: 0o664,
         };
 
         try_pin_init!(Self {
